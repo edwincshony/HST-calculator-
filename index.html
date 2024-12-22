@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .note {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result-container {
+            background-color: #e7f5e4;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result p {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        .result p strong {
+            font-size: 20px;
+            color: #4CAF50;
+        }
+
+        .footer {
+            font-size: 14px;
+            color: #777;
+            margin-top: 30px;
+        }
+
+        /* Media Queries for responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            .note {
+                font-size: 14px;
+            }
+
+            input[type="number"], button {
+                font-size: 16px;
+            }
+
+            .result-container {
+                padding: 15px;
+            }
+
+            .result p {
+                font-size: 16px;
+            }
+
+            .footer {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            .note {
+                font-size: 12px;
+            }
+
+            input[type="number"], button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .result-container {
+                padding: 10px;
+            }
+
+            .result p {
+                font-size: 14px;
+            }
+
+            .footer {
+                font-size: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Price Calculator</h1>
+        <p class="note">Enter the base amount in CAD, and we will calculate the final price with tax and conversion to INR.</p>
+
+        <!-- Input section -->
+        <div class="input-container">
+            <input type="number" id="baseAmount" placeholder="Enter base amount in CAD" />
+        </div>
+
+        <!-- Button to trigger calculation -->
+        <button onclick="calculateFinalPrice()">Calculate Final Price</button>
+
+        <!-- Result section -->
+        <div class="result-container" id="result" style="display: none;">
+            <p><strong>Bill Breakdown:</strong></p>
+            <p id="baseAmountResult"></p>
+            <p id="taxAmountResult"></p>
+            <p id="finalPriceResult"></p>
+            <p id="finalPriceINRResult"></p>
+        </div>
+
+        <div class="footer">
+            <p>Note: Conversion rate used is 1 CAD = 59.09 INR.</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateFinalPrice() {
+            // Get the base amount entered by the user
+            const baseAmount = parseFloat(document.getElementById('baseAmount').value);
+
+            // Validate if the input is a number and greater than 0
+            if (isNaN(baseAmount) || baseAmount <= 0) {
+                alert("Please enter a valid base amount greater than 0.");
+                return;
+            }
+
+            // Calculate 13% of the base amount
+            const taxAmount = baseAmount * 0.13;
+            // Calculate the final price in CAD by adding tax to the base amount
+            const finalPriceCAD = baseAmount + taxAmount;
+
+            // Conversion rate: 1 CAD = 59.09 INR
+            const conversionRate = 59.09;
+            // Convert the final price to INR
+            const finalPriceINR = finalPriceCAD * conversionRate;
+
+            // Display the results in a bill format
+            const resultDiv = document.getElementById('result');
+            document.getElementById('baseAmountResult').innerHTML = `Base Price (CAD): <strong>$${baseAmount.toFixed(2)} CAD</strong>`;
+            document.getElementById('taxAmountResult').innerHTML = `HST (13%): <strong>$${taxAmount.toFixed(2)} CAD</strong>`;
+            document.getElementById('finalPriceResult').innerHTML = `Total Price with HST (CAD): <strong>$${finalPriceCAD.toFixed(2)} CAD</strong>`;
+            document.getElementById('finalPriceINRResult').innerHTML = `Converted Price (INR): <strong>₹${finalPriceINR.toFixed(2)} INR</strong>`;
+
+            resultDiv.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
